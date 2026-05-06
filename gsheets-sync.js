@@ -195,8 +195,8 @@ function updateChart(categories) {
 
   chartBars.forEach(function (bar, index) {
     const count = counts[index] || 0;
-    const height = Math.max(18, Math.round((count / max) * 100));
-    bar.style.height = `${height}%`;
+    const width = Math.max(18, Math.round((count / max) * 100));
+    bar.style.width = `${width}%`;
     const label = bar.querySelector(".chart-label");
     if (label) {
       const base = label.textContent.split("·")[0].trim();
