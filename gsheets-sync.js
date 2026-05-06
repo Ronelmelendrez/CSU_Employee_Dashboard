@@ -28,6 +28,7 @@ const resultCount = document.getElementById("resultCount");
 
 let baseCategories = {};
 let filteredCategories = {};
+let lastUpdatedAt = "";
 
 const currencyFormatter = new Intl.NumberFormat("en-PH", {
   style: "currency",
@@ -288,6 +289,9 @@ function applyFilters() {
   });
 
   renderTablesFor(filteredCategories);
+  updateKpis(filteredCategories, lastUpdatedAt);
+  updateChart(filteredCategories);
+  updateActivity(filteredCategories, lastUpdatedAt);
   updateResultCount();
 }
 
@@ -343,10 +347,8 @@ async function initDashboard() {
 
     baseCategories = categories;
     filteredCategories = categories;
+    lastUpdatedAt = data.updatedAt || "";
 
-    updateKpis(categories, data.updatedAt);
-    updateChart(categories);
-    updateActivity(categories, data.updatedAt);
     updateFilters(categories);
     applyFilters();
   } catch (error) {
