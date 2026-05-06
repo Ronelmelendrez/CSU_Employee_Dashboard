@@ -406,7 +406,7 @@
         <a href="#about" data-section="about">About</a>
         <a href="#features" data-section="features">Features</a>
         <a href="#contact" data-section="contact">Contact</a>
-        <a href="csu-dashboard.html">Open Dashboard</a>
+        <a href="csu-dashboard.html" id="dashboardLink">Open Dashboard</a>
       </nav>
     </div>
   </header>
@@ -553,6 +553,7 @@
     const header = document.querySelector("header");
     const nav = document.getElementById("mainNav");
     const sectionLinks = document.querySelectorAll(".nav-links a[data-section]");
+    const dashboardLink = document.getElementById("dashboardLink");
     const sections = Array.from(sectionLinks).map(function (link) {
       return document.getElementById(link.dataset.section);
     });
@@ -561,6 +562,9 @@
       const compact = window.scrollY > 24;
       header.classList.toggle("is-compact", compact);
       nav.classList.toggle("is-compact", compact);
+      if (dashboardLink) {
+        dashboardLink.classList.toggle("is-active", window.scrollY < 40);
+      }
     }
 
     const observer = new IntersectionObserver(
@@ -573,6 +577,9 @@
               link.dataset.section === entry.target.id
             );
           });
+          if (dashboardLink) {
+            dashboardLink.classList.remove("is-active");
+          }
         });
       },
       { rootMargin: "-40% 0px -55%" }

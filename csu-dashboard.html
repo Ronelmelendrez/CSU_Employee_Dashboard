@@ -37,6 +37,68 @@
       min-height: 100vh;
     }
 
+    .app-shell {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: #ffffff;
+      border-right: 1px solid rgba(11, 111, 58, 0.08);
+      padding: 2rem 1.5rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .sidebar-brand {
+      font-family: "DM Serif Display", "Georgia", serif;
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      color: var(--csu-green-dark);
+    }
+
+    .sidebar-section {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--csu-slate);
+      margin-bottom: 0.75rem;
+    }
+
+    .sidebar-nav {
+      display: grid;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 0.85rem;
+      border-radius: 12px;
+      color: var(--csu-ink);
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.is-active {
+      background: rgba(11, 111, 58, 0.1);
+      color: var(--csu-green-dark);
+    }
+
+    .sidebar-link span {
+      font-size: 0.95rem;
+    }
+
+    .content {
+      padding: 2rem 2.5rem 3rem;
+    }
+
     .hero {
       background: linear-gradient(140deg, var(--csu-green), var(--csu-green-dark));
       color: #ffffff;
@@ -286,6 +348,21 @@
     }
 
     @media (max-width: 992px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(11, 111, 58, 0.08);
+      }
+
+      .content {
+        padding: 1.5rem 1.25rem 2.5rem;
+      }
+
       .dashboard-grid {
         grid-template-columns: 1fr;
       }
@@ -297,7 +374,36 @@
   </style>
 </head>
 <body>
-  <main class="container py-4">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">CSU Dashboard</div>
+      <div class="sidebar-section">Overview</div>
+      <nav class="sidebar-nav">
+        <a class="sidebar-link is-active" href="#top">
+          <span>Dashboard Home</span>
+        </a>
+        <a class="sidebar-link" href="#records">
+          <span>Employee Records</span>
+        </a>
+      </nav>
+      <div class="sidebar-section">Categories</div>
+      <nav class="sidebar-nav">
+        <a class="sidebar-link" href="#panel-teaching-perm">
+          <span>Teaching - Permanent</span>
+        </a>
+        <a class="sidebar-link" href="#panel-teaching-non">
+          <span>Teaching - Non-Permanent</span>
+        </a>
+        <a class="sidebar-link" href="#panel-nonteaching-perm">
+          <span>Non-Teaching - Permanent</span>
+        </a>
+        <a class="sidebar-link" href="#panel-nonteaching-non">
+          <span>Non-Teaching - Non-Permanent</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="content" id="top">
     <section class="hero">
       <h1 class="hero-title">CSU Employee Intelligence Hub</h1>
       <p class="hero-subtitle">
@@ -353,7 +459,7 @@
       </div>
     </section>
 
-    <section class="panel mt-4">
+    <section class="panel mt-4" id="records">
       <div class="panel-title">Employee Records</div>
       <div class="filter-panel">
         <div>
@@ -481,7 +587,8 @@
         </div>
       </div>
     </section>
-  </main>
+    </main>
+  </div>
 
   <div class="spinner-overlay" id="loadingSpinner">
     <div class="text-center">
