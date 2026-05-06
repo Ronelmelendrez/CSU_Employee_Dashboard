@@ -21,6 +21,7 @@ const kpiNonTeaching = document.getElementById("kpi-nonteaching");
 const kpiUpdated = document.getElementById("kpi-updated");
 const attainmentChart = document.getElementById("attainmentChart");
 const attainmentLegendItems = document.querySelectorAll(".legend-item");
+const summaryBlock = document.getElementById("summaryBlock");
 const searchInput = document.getElementById("searchInput");
 const statusFilter = document.getElementById("statusFilter");
 const fundFilter = document.getElementById("fundFilter");
@@ -284,6 +285,55 @@ function updateAttainmentChart(categories) {
   ctx.restore();
 }
 
+function updateSummary(categories) {
+  if (!summaryBlock) return;
+
+  const total = Object.keys(categories).reduce(function (sum, key) {
+    return sum + getCategoryCount(categories, key);
+  }, 0);
+
+  let topCategory = "—";
+  let topCategoryCount = 0;
+  Object.keys(categories).forEach(function (key) {
+    const count = getCategoryCount(categories, key);
+    if (count > topCategoryCount) {
+      topCategory = key;
+      topCategoryCount = count;
+    }
+  });
+
+  const fundCounts = new Map();
+  Object.keys(categories).forEach(function (key) {
+    (categories[key] || []).forEach(function (record) {
+      const fund = String(record["Fund Source"] ?? "").trim();
+      if (!fund) return;
+      fundCounts.set(fund, (fundCounts.get(fund) || 0) + 1);
+    });
+  });
+
+  let topFund = "—";
+  let topFundCount = 0;
+  fundCounts.forEach(function (count, fund) {
+    if (count > topFundCount) {
+      topFund = fund;
+      topFundCount = count;
+    }
+  });
+
+  const totalText = total.toLocaleString("en-PH");
+  const categoryText = topCategoryCount
+    ? `${topCategory} (${topCategoryCount.toLocaleString("en-PH")})`
+    : "—";
+  const fundText = topFundCount
+    ? `${topFund} (${topFundCount.toLocaleString("en-PH")})`
+    : "—";
+
+  summaryBlock.innerHTML =
+    `<strong>Summary:</strong> ${totalText} employees · ` +
+    `Top category: ${categoryText} · ` +
+    `Top fund source: ${fundText}`;
+}
+
 function populateFilter(select, values) {
   if (!select) return;
   const currentValue = select.value;
@@ -363,6 +413,7 @@ function applyFilters() {
   updateKpis(filteredCategories, lastUpdatedAt);
   updateChart(filteredCategories);
   updateAttainmentChart(filteredCategories);
+  updateSummary(filteredCategories);
   updateResultCount();
 }
 

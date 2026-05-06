@@ -357,6 +357,21 @@
       color: var(--csu-slate);
     }
 
+    .summary-block {
+      margin-top: 1rem;
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      background: #f8fbf8;
+      border: 1px solid rgba(11, 111, 58, 0.08);
+      font-size: 0.9rem;
+      color: var(--csu-slate);
+    }
+
+    .summary-block strong {
+      color: var(--csu-ink);
+      font-weight: 600;
+    }
+
     .legend-item {
       display: flex;
       align-items: center;
@@ -651,6 +666,9 @@
               <span class="legend-value">0</span>
             </div>
           </div>
+        </div>
+        <div class="summary-block" id="summaryBlock">
+          <strong>Summary:</strong> —
         </div>
       </div>
     </section>
