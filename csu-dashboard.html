@@ -44,6 +44,7 @@
       box-shadow: var(--shadow-soft);
       position: relative;
       overflow: hidden;
+      margin-bottom: 2rem;
     }
 
     .hero::after {
@@ -74,7 +75,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1.5rem;
-      margin-top: -2rem;
+      margin-top: 0;
     }
 
     .stat-card {
@@ -120,7 +121,7 @@
       display: grid;
       grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
       gap: 1.5rem;
-      margin-top: 2.5rem;
+      margin-top: 2rem;
     }
 
     .panel {
@@ -140,7 +141,7 @@
     .chart-shell {
       background: var(--csu-mint);
       border-radius: 16px;
-      padding: 1rem;
+      padding: 1rem 1rem 2.5rem;
       height: 260px;
       display: flex;
       align-items: flex-end;
@@ -155,13 +156,14 @@
       animation: growUp 0.8s ease forwards;
     }
 
-    .chart-bar span {
+    .chart-label {
       position: absolute;
       bottom: -1.75rem;
       left: 50%;
       transform: translateX(-50%);
       font-size: 0.75rem;
       color: var(--csu-slate);
+      white-space: nowrap;
     }
 
     .activity-item {
@@ -255,7 +257,7 @@
       }
 
       .stat-grid {
-        margin-top: 1.5rem;
+        margin-top: 0;
       }
     }
   </style>
@@ -297,10 +299,18 @@
       <div class="panel">
         <div class="panel-title">Headcount by Category</div>
         <div class="chart-shell">
-          <div class="chart-bar" style="height: 75%"><span>Teach Perm</span></div>
-          <div class="chart-bar" style="height: 55%"><span>Teach Non</span></div>
-          <div class="chart-bar" style="height: 68%"><span>NonTeach Perm</span></div>
-          <div class="chart-bar" style="height: 45%"><span>NonTeach Non</span></div>
+          <div class="chart-bar" data-category="Teaching - Permanent" style="height: 45%">
+            <span class="chart-label">Teach Perm</span>
+          </div>
+          <div class="chart-bar" data-category="Teaching - Non-Permanent" style="height: 45%">
+            <span class="chart-label">Teach Non</span>
+          </div>
+          <div class="chart-bar" data-category="Non-Teaching - Permanent" style="height: 45%">
+            <span class="chart-label">NonTeach Perm</span>
+          </div>
+          <div class="chart-bar" data-category="Non-Teaching - Non-Permanent" style="height: 45%">
+            <span class="chart-label">NonTeach Non</span>
+          </div>
         </div>
       </div>
       <div class="panel">

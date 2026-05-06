@@ -14,6 +14,11 @@ const TABLE_HEADERS = [
 
 const spinner = document.getElementById("loadingSpinner");
 const tables = Array.from(document.querySelectorAll("table[data-category]"));
+const chartBars = Array.from(document.querySelectorAll(".chart-bar[data-category]"));
+const kpiTotal = document.getElementById("kpi-total");
+const kpiTeaching = document.getElementById("kpi-teaching");
+const kpiNonTeaching = document.getElementById("kpi-nonteaching");
+const kpiUpdated = document.getElementById("kpi-updated");
 
 const currencyFormatter = new Intl.NumberFormat("en-PH", {
   style: "currency",
@@ -78,6 +83,62 @@ function renderCategory(table, records) {
   tbody.innerHTML = records.map(buildRow).join("");
 }
 
+function getCategoryCount(categories, name) {
+  const list = categories[name] || [];
+  return Array.isArray(list) ? list.length : 0;
+}
+
+function updateKpis(categories, updatedAt) {
+  if (kpiTotal) {
+    const total = Object.keys(categories).reduce(function (sum, key) {
+      return sum + getCategoryCount(categories, key);
+    }, 0);
+    kpiTotal.textContent = total.toLocaleString("en-PH");
+  }
+
+  if (kpiTeaching) {
+    const teaching =
+      getCategoryCount(categories, "Teaching - Permanent") +
+      getCategoryCount(categories, "Teaching - Non-Permanent");
+    kpiTeaching.textContent = teaching.toLocaleString("en-PH");
+  }
+
+  if (kpiNonTeaching) {
+    const nonTeaching =
+      getCategoryCount(categories, "Non-Teaching - Permanent") +
+      getCategoryCount(categories, "Non-Teaching - Non-Permanent");
+    kpiNonTeaching.textContent = nonTeaching.toLocaleString("en-PH");
+  }
+
+  if (kpiUpdated && updatedAt) {
+    const date = parseDate(updatedAt);
+    kpiUpdated.textContent = date ? dateFormatter.format(date) : updatedAt;
+  }
+}
+
+function updateChart(categories) {
+  if (!chartBars.length) return;
+
+  const counts = chartBars.map(function (bar) {
+    const category = bar.getAttribute("data-category") || "";
+    return getCategoryCount(categories, category);
+  });
+  const max = Math.max.apply(null, counts.concat(1));
+
+  chartBars.forEach(function (bar, index) {
+    const count = counts[index] || 0;
+    const height = Math.max(18, Math.round((count / max) * 100));
+    bar.style.height = `${height}%`;
+    const label = bar.querySelector(".chart-label");
+    if (label) {
+      const base = label.textContent.split("·")[0].trim();
+      label.textContent = `${base} · ${count}`;
+    }
+    bar.setAttribute("aria-label", `${count} records`);
+    bar.title = `${count} records`;
+  });
+}
+
 async function fetchDashboardData() {
   if (SCRIPT_URL === "YOUR_APPS_SCRIPT_WEB_APP_URL") {
     throw new Error("Set SCRIPT_URL to your Apps Script Web App URL.");
@@ -132,6 +193,9 @@ async function initDashboard() {
       const category = table.getAttribute("data-category");
       renderCategory(table, categories[category] || []);
     });
+
+    updateKpis(categories, data.updatedAt);
+    updateChart(categories);
   } catch (error) {
     tables.forEach(function (table) {
       renderCategory(table, []);
