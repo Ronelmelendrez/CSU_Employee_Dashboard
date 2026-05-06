@@ -57,6 +57,7 @@
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(11, 111, 58, 0.08);
+      transition: padding 0.2s ease, box-shadow 0.2s ease;
     }
 
     .nav {
@@ -65,6 +66,16 @@
       justify-content: space-between;
       gap: 2rem;
       padding: 0.5rem 0 0.75rem;
+      transition: padding 0.2s ease;
+    }
+
+    .nav.is-compact {
+      padding: 0.2rem 0 0.4rem;
+    }
+
+    header.is-compact {
+      padding: 0.8rem 0 0.35rem;
+      box-shadow: 0 18px 40px rgba(10, 31, 19, 0.08);
     }
 
     .logo {
@@ -85,8 +96,24 @@
       color: var(--csu-slate);
     }
 
-    .nav-links a:hover {
+    .nav-links a:hover,
+    .nav-links a.is-active {
       color: var(--csu-green);
+    }
+
+    .nav-links a.is-active {
+      position: relative;
+    }
+
+    .nav-links a.is-active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -8px;
+      height: 2px;
+      background: var(--csu-gold);
+      border-radius: 999px;
     }
 
     .hero {
@@ -373,12 +400,12 @@
 </head>
 <body>
   <header>
-    <div class="container nav">
+    <div class="container nav" id="mainNav">
       <div class="logo">CSU Employee Hub</div>
       <nav class="nav-links">
-        <a href="#about">About</a>
-        <a href="#features">Features</a>
-        <a href="#contact">Contact</a>
+        <a href="#about" data-section="about">About</a>
+        <a href="#features" data-section="features">Features</a>
+        <a href="#contact" data-section="contact">Contact</a>
         <a href="csu-dashboard.html">Open Dashboard</a>
       </nav>
     </div>
@@ -521,5 +548,42 @@
   <footer>
     CSU Employee Dashboard System · Formal staffing intelligence for academic leaders.
   </footer>
+
+  <script>
+    const header = document.querySelector("header");
+    const nav = document.getElementById("mainNav");
+    const sectionLinks = document.querySelectorAll(".nav-links a[data-section]");
+    const sections = Array.from(sectionLinks).map(function (link) {
+      return document.getElementById(link.dataset.section);
+    });
+
+    function updateCompactNav() {
+      const compact = window.scrollY > 24;
+      header.classList.toggle("is-compact", compact);
+      nav.classList.toggle("is-compact", compact);
+    }
+
+    const observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          sectionLinks.forEach(function (link) {
+            link.classList.toggle(
+              "is-active",
+              link.dataset.section === entry.target.id
+            );
+          });
+        });
+      },
+      { rootMargin: "-40% 0px -55%" }
+    );
+
+    sections.forEach(function (section) {
+      if (section) observer.observe(section);
+    });
+
+    updateCompactNav();
+    window.addEventListener("scroll", updateCompactNav);
+  </script>
 </body>
 </html>
