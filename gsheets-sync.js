@@ -46,34 +46,26 @@ function parseDate(value) {
   if (!value) return "";
   if (value instanceof Date) return value;
   if (typeof value === "number") {
-    // Google Sheets serial date (days since 1899-12-30)
     return new Date(Math.round((value - 25569) * 86400 * 1000));
   }
 
   const trimmed = String(value).trim();
-  const parsed = new Date(trimmed);
-  if (!Number.isNaN(parsed.getTime())) {
-    return parsed;
-  }
-
-  const match = trimmed.match(
+  const parts = trimmed.match(
     /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
   );
-  if (match) {
-    const partA = Number(match[1]);
-    const partB = Number(match[2]);
-    const year = Number(match[3]);
-    const hours = Number(match[4] || 0);
-    const minutes = Number(match[5] || 0);
-    const seconds = Number(match[6] || 0);
-    const isDayFirst = partA > 12 && partB <= 12;
-    const month = isDayFirst ? partB : partA;
-    const day = isDayFirst ? partA : partB;
+  if (parts) {
+    const month = Number(parts[1]);
+    const day = Number(parts[2]);
+    const year = Number(parts[3]);
+    const hours = Number(parts[4] || 0);
+    const minutes = Number(parts[5] || 0);
+    const seconds = Number(parts[6] || 0);
     const built = new Date(year, month - 1, day, hours, minutes, seconds);
     return Number.isNaN(built.getTime()) ? "" : built;
   }
 
-  return "";
+  const parsed = new Date(trimmed);
+  return Number.isNaN(parsed.getTime()) ? "" : parsed;
 }
 
 function formatCell(key, value) {
