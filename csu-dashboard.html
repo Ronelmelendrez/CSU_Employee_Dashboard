@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Spline+Sans:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
   <link
@@ -24,10 +24,11 @@
       --csu-mint: #e9f4ee;
       --csu-slate: #5a6a60;
       --shadow-soft: 0 24px 40px rgba(10, 31, 19, 0.14);
+      --shadow-float: 0 30px 60px rgba(10, 31, 19, 0.18);
     }
 
     body {
-      font-family: "Spline Sans", "Segoe UI", Tahoma, sans-serif;
+      font-family: "Manrope", "Segoe UI", sans-serif;
       color: var(--csu-ink);
       background:
         radial-gradient(circle at 15% 10%, rgba(208, 164, 0, 0.12), transparent 40%),
@@ -37,11 +38,11 @@
     }
 
     .hero {
-      background: linear-gradient(120deg, var(--csu-green), var(--csu-green-dark));
+      background: linear-gradient(140deg, var(--csu-green), var(--csu-green-dark));
       color: #ffffff;
-      border-radius: 24px;
-      padding: 2.5rem;
-      box-shadow: var(--shadow-soft);
+      border-radius: 28px;
+      padding: 2.75rem;
+      box-shadow: var(--shadow-float);
       position: relative;
       overflow: hidden;
       margin-bottom: 2rem;
@@ -52,16 +53,16 @@
       position: absolute;
       top: -80px;
       right: -60px;
-      width: 220px;
-      height: 220px;
-      background: rgba(208, 164, 0, 0.18);
+      width: 260px;
+      height: 260px;
+      background: rgba(208, 164, 0, 0.22);
       border-radius: 50%;
     }
 
     .hero-title {
-      font-family: "Space Grotesk", "Segoe UI", sans-serif;
-      font-size: clamp(1.8rem, 2vw + 1.2rem, 2.75rem);
-      font-weight: 700;
+      font-family: "DM Serif Display", "Georgia", serif;
+      font-size: clamp(2rem, 2.2vw + 1.2rem, 3rem);
+      font-weight: 400;
       margin-bottom: 0.5rem;
     }
 
@@ -98,15 +99,15 @@
     }
 
     .stat-label {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--csu-slate);
     }
 
     .stat-value {
-      font-family: "Space Grotesk", "Segoe UI", sans-serif;
-      font-size: 2rem;
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      font-size: 2.1rem;
       font-weight: 700;
       margin: 0.35rem 0 0;
     }
@@ -132,8 +133,8 @@
     }
 
     .panel-title {
-      font-family: "Space Grotesk", "Segoe UI", sans-serif;
-      font-size: 1.2rem;
+      font-family: "DM Serif Display", "Georgia", serif;
+      font-size: 1.35rem;
       font-weight: 600;
       margin-bottom: 1rem;
     }
