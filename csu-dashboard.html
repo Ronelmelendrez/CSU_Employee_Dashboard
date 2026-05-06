@@ -201,6 +201,51 @@
       margin-bottom: 1rem;
     }
 
+    .category-group {
+      border: 1px solid rgba(11, 111, 58, 0.08);
+      border-radius: 18px;
+      background: #ffffff;
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 16px 32px rgba(10, 31, 19, 0.06);
+    }
+
+    .category-toggle {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: #f8fbf8;
+      border: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--csu-ink);
+      cursor: pointer;
+    }
+
+    .category-toggle span {
+      font-family: "DM Serif Display", "Georgia", serif;
+      font-weight: 400;
+    }
+
+    .category-toggle::after {
+      content: "+";
+      font-size: 1.4rem;
+      color: var(--csu-green-dark);
+      transition: transform 0.2s ease;
+    }
+
+    .category-group[open] .category-toggle::after {
+      content: "-";
+      transform: translateY(-1px);
+    }
+
+    .category-body {
+      padding: 1rem 1.25rem 1.5rem;
+      background: #ffffff;
+    }
+
     .chart-shell {
       background: var(--csu-mint);
       border-radius: 16px;
@@ -487,93 +532,101 @@
         </div>
       </div>
       <div class="pt-4" id="categoryTables">
-        <section class="mb-4" id="panel-teaching-perm">
-          <h3 class="panel-title">Teaching - Permanent</h3>
-          <div class="table-responsive">
-            <table class="table table-hover" data-category="Teaching - Permanent">
-              <thead>
-                <tr>
-                  <th>Name of Personnel</th>
-                  <th>Start in CSU</th>
-                  <th>Status</th>
-                  <th>Highest Educational Attainment</th>
-                  <th>Academic Rank</th>
-                  <th>Salary Grade</th>
-                  <th>STEP</th>
-                  <th>Salary</th>
-                  <th>Fund Source</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+        <details class="category-group" id="panel-teaching-perm" open>
+          <summary class="category-toggle"><span>Teaching - Permanent</span></summary>
+          <div class="category-body">
+            <div class="table-responsive">
+              <table class="table table-hover" data-category="Teaching - Permanent">
+                <thead>
+                  <tr>
+                    <th>Name of Personnel</th>
+                    <th>Start in CSU</th>
+                    <th>Status</th>
+                    <th>Highest Educational Attainment</th>
+                    <th>Academic Rank</th>
+                    <th>Salary Grade</th>
+                    <th>STEP</th>
+                    <th>Salary</th>
+                    <th>Fund Source</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
-        </section>
+        </details>
 
-        <section class="mb-4" id="panel-teaching-non">
-          <h3 class="panel-title">Teaching - Non-Permanent</h3>
-          <div class="table-responsive">
-            <table class="table table-hover" data-category="Teaching - Non-Permanent">
-              <thead>
-                <tr>
-                  <th>Name of Personnel</th>
-                  <th>Start in CSU</th>
-                  <th>Status</th>
-                  <th>Highest Educational Attainment</th>
-                  <th>Academic Rank</th>
-                  <th>Salary Grade</th>
-                  <th>STEP</th>
-                  <th>Salary</th>
-                  <th>Fund Source</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+        <details class="category-group" id="panel-teaching-non">
+          <summary class="category-toggle"><span>Teaching - Non-Permanent</span></summary>
+          <div class="category-body">
+            <div class="table-responsive">
+              <table class="table table-hover" data-category="Teaching - Non-Permanent">
+                <thead>
+                  <tr>
+                    <th>Name of Personnel</th>
+                    <th>Start in CSU</th>
+                    <th>Status</th>
+                    <th>Highest Educational Attainment</th>
+                    <th>Academic Rank</th>
+                    <th>Salary Grade</th>
+                    <th>STEP</th>
+                    <th>Salary</th>
+                    <th>Fund Source</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
-        </section>
+        </details>
 
-        <section class="mb-4" id="panel-nonteaching-perm">
-          <h3 class="panel-title">Non-Teaching - Permanent</h3>
-          <div class="table-responsive">
-            <table class="table table-hover" data-category="Non-Teaching - Permanent">
-              <thead>
-                <tr>
-                  <th>Name of Personnel</th>
-                  <th>Start in CSU</th>
-                  <th>Status</th>
-                  <th>Highest Educational Attainment</th>
-                  <th>Academic Rank</th>
-                  <th>Salary Grade</th>
-                  <th>STEP</th>
-                  <th>Salary</th>
-                  <th>Fund Source</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+        <details class="category-group" id="panel-nonteaching-perm">
+          <summary class="category-toggle"><span>Non-Teaching - Permanent</span></summary>
+          <div class="category-body">
+            <div class="table-responsive">
+              <table class="table table-hover" data-category="Non-Teaching - Permanent">
+                <thead>
+                  <tr>
+                    <th>Name of Personnel</th>
+                    <th>Start in CSU</th>
+                    <th>Status</th>
+                    <th>Highest Educational Attainment</th>
+                    <th>Academic Rank</th>
+                    <th>Salary Grade</th>
+                    <th>STEP</th>
+                    <th>Salary</th>
+                    <th>Fund Source</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
-        </section>
+        </details>
 
-        <section id="panel-nonteaching-non">
-          <h3 class="panel-title">Non-Teaching - Non-Permanent</h3>
-          <div class="table-responsive">
-            <table class="table table-hover" data-category="Non-Teaching - Non-Permanent">
-              <thead>
-                <tr>
-                  <th>Name of Personnel</th>
-                  <th>Start in CSU</th>
-                  <th>Status</th>
-                  <th>Highest Educational Attainment</th>
-                  <th>Academic Rank</th>
-                  <th>Salary Grade</th>
-                  <th>STEP</th>
-                  <th>Salary</th>
-                  <th>Fund Source</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+        <details class="category-group" id="panel-nonteaching-non">
+          <summary class="category-toggle"><span>Non-Teaching - Non-Permanent</span></summary>
+          <div class="category-body">
+            <div class="table-responsive">
+              <table class="table table-hover" data-category="Non-Teaching - Non-Permanent">
+                <thead>
+                  <tr>
+                    <th>Name of Personnel</th>
+                    <th>Start in CSU</th>
+                    <th>Status</th>
+                    <th>Highest Educational Attainment</th>
+                    <th>Academic Rank</th>
+                    <th>Salary Grade</th>
+                    <th>STEP</th>
+                    <th>Salary</th>
+                    <th>Fund Source</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
-        </section>
+        </details>
       </div>
     </section>
     </main>
