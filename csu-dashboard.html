@@ -625,6 +625,18 @@
     sections.forEach(function (section) {
       sidebarObserver.observe(section);
     });
+
+    const tabButtons = document.querySelectorAll("#categoryTabs .nav-link");
+    tabButtons.forEach(function (button) {
+      button.addEventListener("shown.bs.tab", function (event) {
+        const target = event.target.getAttribute("data-bs-target");
+        if (!target) return;
+        const targetId = target.replace("#", "");
+        sidebarLinks.forEach(function (link) {
+          link.classList.toggle("is-active", link.dataset.section === targetId);
+        });
+      });
+    });
   </script>
 </body>
 </html>
