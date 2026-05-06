@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzIZrDVWPcekn-2xtINS_5eOa7tUWmmGdHU5D2uc5_5GV7oElbp3ed0lLDNygY1bUjACg/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJ5OO_jg9ZDvBMDKfbNrihuH_AxUM-fAjbFFdgapbqQUc5JD9Pqq9dISwCFSheMalf-w/exec";
 
 const TABLE_HEADERS = [
   "Name of Personnel",
@@ -45,8 +45,35 @@ const dateFormatter = new Intl.DateTimeFormat("en-PH", {
 function parseDate(value) {
   if (!value) return "";
   if (value instanceof Date) return value;
-  const parsed = new Date(value);
-  return Number.isNaN(parsed.getTime()) ? "" : parsed;
+  if (typeof value === "number") {
+    // Google Sheets serial date (days since 1899-12-30)
+    return new Date(Math.round((value - 25569) * 86400 * 1000));
+  }
+
+  const trimmed = String(value).trim();
+  const parsed = new Date(trimmed);
+  if (!Number.isNaN(parsed.getTime())) {
+    return parsed;
+  }
+
+  const match = trimmed.match(
+    /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
+  );
+  if (match) {
+    const partA = Number(match[1]);
+    const partB = Number(match[2]);
+    const year = Number(match[3]);
+    const hours = Number(match[4] || 0);
+    const minutes = Number(match[5] || 0);
+    const seconds = Number(match[6] || 0);
+    const isDayFirst = partA > 12 && partB <= 12;
+    const month = isDayFirst ? partB : partA;
+    const day = isDayFirst ? partA : partB;
+    const built = new Date(year, month - 1, day, hours, minutes, seconds);
+    return Number.isNaN(built.getTime()) ? "" : built;
+  }
+
+  return "";
 }
 
 function formatCell(key, value) {
