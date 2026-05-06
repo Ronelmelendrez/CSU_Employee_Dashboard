@@ -51,15 +51,21 @@ function parseDate(value) {
 
   const trimmed = String(value).trim();
   const parts = trimmed.match(
-    /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
+    /^(\d{1,2})\/(\d{1,2})\/(\d{2,4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/
   );
   if (parts) {
-    const month = Number(parts[1]);
-    const day = Number(parts[2]);
-    const year = Number(parts[3]);
+    const partA = Number(parts[1]);
+    const partB = Number(parts[2]);
+    let year = Number(parts[3]);
     const hours = Number(parts[4] || 0);
     const minutes = Number(parts[5] || 0);
     const seconds = Number(parts[6] || 0);
+    if (year < 100) {
+      year = year >= 70 ? 1900 + year : 2000 + year;
+    }
+    const isDayFirst = partA > 12 && partB <= 12;
+    const month = isDayFirst ? partB : partA;
+    const day = isDayFirst ? partA : partB;
     const built = new Date(year, month - 1, day, hours, minutes, seconds);
     return Number.isNaN(built.getTime()) ? "" : built;
   }
