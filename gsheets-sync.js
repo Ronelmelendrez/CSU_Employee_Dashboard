@@ -194,9 +194,9 @@ function updateActivity(categories, updatedAt) {
   const items = [
     `Roster synced on ${updatedText}.`,
     topCategory
-      ? `Largest group: ${topCategory.name} (${topCategory.count} of ${totalEmployees}).`
+      ? `Largest group in view: ${topCategory.name} (${topCategory.count} of ${totalEmployees}).`
       : "Largest group: unavailable.",
-    `Tracking ${statusSet.size} statuses across ${fundSet.size} fund sources.`,
+    `Current view includes ${statusSet.size} statuses across ${fundSet.size} fund sources.`,
   ];
 
   activityList.innerHTML = items
