@@ -20,6 +20,8 @@ const kpiTeaching = document.getElementById("kpi-teaching");
 const kpiNonTeaching = document.getElementById("kpi-nonteaching");
 const kpiUpdated = document.getElementById("kpi-updated");
 const activityList = document.getElementById("activityList");
+const attainmentChart = document.getElementById("attainmentChart");
+const attainmentLegendItems = document.querySelectorAll(".legend-item");
 const searchInput = document.getElementById("searchInput");
 const statusFilter = document.getElementById("statusFilter");
 const fundFilter = document.getElementById("fundFilter");
@@ -258,6 +260,79 @@ function updateActivity(categories, updatedAt) {
     .join("");
 }
 
+function updateAttainmentChart(categories) {
+  if (!attainmentChart) return;
+
+  const counts = {
+    bachelors: 0,
+    masters: 0,
+    phd: 0,
+  };
+
+  Object.keys(categories).forEach(function (key) {
+    (categories[key] || []).forEach(function (record) {
+      const raw = String(record["Highest Educational Attainment"] ?? "").toLowerCase();
+      if (raw.includes("bachelor")) {
+        counts.bachelors += 1;
+      } else if (raw.includes("master")) {
+        counts.masters += 1;
+      } else if (raw.includes("phd") || raw.includes("doctor")) {
+        counts.phd += 1;
+      }
+    });
+  });
+
+  attainmentLegendItems.forEach(function (item) {
+    const key = item.getAttribute("data-key");
+    const valueEl = item.querySelector(".legend-value");
+    if (valueEl && key && counts[key] !== undefined) {
+      valueEl.textContent = counts[key].toLocaleString("en-PH");
+    }
+  });
+
+  const total = counts.bachelors + counts.masters + counts.phd;
+  const ctx = attainmentChart.getContext("2d");
+  const size = attainmentChart.width;
+  const radius = size / 2 - 6;
+  ctx.clearRect(0, 0, size, size);
+  ctx.save();
+  ctx.translate(size / 2, size / 2);
+
+  if (!total) {
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fillStyle = "#eef2ef";
+    ctx.fill();
+    ctx.fillStyle = "#5a6a60";
+    ctx.font = "12px Manrope, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("No data", 0, 4);
+    ctx.restore();
+    return;
+  }
+
+  const slices = [
+    { value: counts.bachelors, color: "#0b6f3a" },
+    { value: counts.masters, color: "#d0a400" },
+    { value: counts.phd, color: "#064226" },
+  ];
+
+  let startAngle = -Math.PI / 2;
+  slices.forEach(function (slice) {
+    const angle = (slice.value / total) * Math.PI * 2;
+    if (!angle) return;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, radius, startAngle, startAngle + angle);
+    ctx.closePath();
+    ctx.fillStyle = slice.color;
+    ctx.fill();
+    startAngle += angle;
+  });
+
+  ctx.restore();
+}
+
 function populateFilter(select, values) {
   if (!select) return;
   const currentValue = select.value;
@@ -337,6 +412,7 @@ function applyFilters() {
   updateKpis(filteredCategories, lastUpdatedAt);
   updateChart(filteredCategories);
   updateActivity(filteredCategories, lastUpdatedAt);
+  updateAttainmentChart(filteredCategories);
   updateResultCount();
 }
 

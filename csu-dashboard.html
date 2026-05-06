@@ -302,6 +302,45 @@
       color: var(--csu-slate);
     }
 
+    .attainment-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .attainment-legend {
+      display: grid;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: var(--csu-slate);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .legend-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .legend-swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .legend-value {
+      font-weight: 600;
+      color: var(--csu-ink);
+    }
+
     .filter-panel {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -503,6 +542,33 @@
         </div>
       </div>
       <div class="panel">
+        <div class="panel-title">Highest Attainment</div>
+        <div class="attainment-grid">
+          <canvas id="attainmentChart" width="140" height="140" aria-label="Highest attainment distribution"></canvas>
+          <div class="attainment-legend">
+            <div class="legend-item" data-key="bachelors">
+              <span class="legend-label">
+                <span class="legend-swatch" style="background:#0b6f3a"></span>
+                Bachelor's
+              </span>
+              <span class="legend-value">0</span>
+            </div>
+            <div class="legend-item" data-key="masters">
+              <span class="legend-label">
+                <span class="legend-swatch" style="background:#d0a400"></span>
+                Master's
+              </span>
+              <span class="legend-value">0</span>
+            </div>
+            <div class="legend-item" data-key="phd">
+              <span class="legend-label">
+                <span class="legend-swatch" style="background:#064226"></span>
+                PhD
+              </span>
+              <span class="legend-value">0</span>
+            </div>
+          </div>
+        </div>
         <div class="panel-title">Recent Activity</div>
         <div id="activityList"></div>
       </div>
