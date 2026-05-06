@@ -190,6 +190,39 @@
       color: var(--csu-slate);
     }
 
+    .filter-panel {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      align-items: end;
+      margin-bottom: 1.5rem;
+      background: #f8fbf8;
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      border: 1px solid rgba(11, 111, 58, 0.08);
+    }
+
+    .filter-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--csu-slate);
+      margin-bottom: 0.35rem;
+      display: block;
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .result-count {
+      font-size: 0.85rem;
+      color: var(--csu-slate);
+      margin: 0;
+    }
+
     .table thead th {
       background: #e6efe9;
       color: var(--csu-ink);
@@ -315,29 +348,37 @@
       </div>
       <div class="panel">
         <div class="panel-title">Recent Activity</div>
-        <div class="activity-item">
-          <div class="activity-dot"></div>
-          <div>
-            <div class="activity-text">Personnel roster synced successfully.</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-dot"></div>
-          <div>
-            <div class="activity-text">Teaching permanents remain the largest group.</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-dot"></div>
-          <div>
-            <div class="activity-text">Check fund source mix per category.</div>
-          </div>
-        </div>
+        <div id="activityList"></div>
       </div>
     </section>
 
     <section class="panel mt-4">
       <div class="panel-title">Employee Records</div>
+      <div class="filter-panel">
+        <div>
+          <label class="filter-label" for="searchInput">Search</label>
+          <input type="text" class="form-control" id="searchInput" placeholder="Name, rank, fund source..." />
+        </div>
+        <div>
+          <label class="filter-label" for="statusFilter">Status</label>
+          <select class="form-select" id="statusFilter">
+            <option value="">All statuses</option>
+          </select>
+        </div>
+        <div>
+          <label class="filter-label" for="fundFilter">Fund Source</label>
+          <select class="form-select" id="fundFilter">
+            <option value="">All fund sources</option>
+          </select>
+        </div>
+        <div>
+          <label class="filter-label" for="clearFilters">Actions</label>
+          <div class="filter-actions">
+            <button class="btn btn-outline-success" type="button" id="clearFilters">Clear</button>
+            <p class="result-count" id="resultCount">Showing 0 records</p>
+          </div>
+        </div>
+      </div>
       <ul class="nav nav-tabs" id="categoryTabs" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="tab-teaching-perm" data-bs-toggle="tab" data-bs-target="#panel-teaching-perm" type="button" role="tab">Teaching - Permanent</button>

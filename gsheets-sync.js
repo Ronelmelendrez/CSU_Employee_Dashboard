@@ -19,6 +19,15 @@ const kpiTotal = document.getElementById("kpi-total");
 const kpiTeaching = document.getElementById("kpi-teaching");
 const kpiNonTeaching = document.getElementById("kpi-nonteaching");
 const kpiUpdated = document.getElementById("kpi-updated");
+const activityList = document.getElementById("activityList");
+const searchInput = document.getElementById("searchInput");
+const statusFilter = document.getElementById("statusFilter");
+const fundFilter = document.getElementById("fundFilter");
+const clearFilters = document.getElementById("clearFilters");
+const resultCount = document.getElementById("resultCount");
+
+let baseCategories = {};
+let filteredCategories = {};
 
 const currencyFormatter = new Intl.NumberFormat("en-PH", {
   style: "currency",
@@ -65,6 +74,10 @@ function buildRow(record) {
   return `<tr>${cells.join("")}</tr>`;
 }
 
+function normalizeValue(value) {
+  return String(value ?? "").trim().toLowerCase();
+}
+
 function renderCategory(table, records) {
   const tbody = table.querySelector("tbody");
   if (!tbody) return;
@@ -81,6 +94,13 @@ function renderCategory(table, records) {
   }
 
   tbody.innerHTML = records.map(buildRow).join("");
+}
+
+function renderTablesFor(categories) {
+  tables.forEach(function (table) {
+    const category = table.getAttribute("data-category");
+    renderCategory(table, categories[category] || []);
+  });
 }
 
 function getCategoryCount(categories, name) {
@@ -139,6 +159,138 @@ function updateChart(categories) {
   });
 }
 
+function updateActivity(categories, updatedAt) {
+  if (!activityList) return;
+
+  const categoryCounts = Object.keys(categories).map(function (name) {
+    return { name: name, count: getCategoryCount(categories, name) };
+  });
+
+  const totalEmployees = categoryCounts.reduce(function (sum, item) {
+    return sum + item.count;
+  }, 0);
+
+  const topCategory = categoryCounts.sort(function (a, b) {
+    return b.count - a.count;
+  })[0];
+
+  const statusSet = new Set();
+  const fundSet = new Set();
+
+  Object.keys(categories).forEach(function (key) {
+    (categories[key] || []).forEach(function (record) {
+      const status = String(record["Status"] ?? "").trim();
+      const fund = String(record["Fund Source"] ?? "").trim();
+      if (status) statusSet.add(status);
+      if (fund) fundSet.add(fund);
+    });
+  });
+
+  const updatedText = updatedAt
+    ? dateFormatter.format(parseDate(updatedAt))
+    : "Just now";
+
+  const items = [
+    `Roster synced on ${updatedText}.`,
+    topCategory
+      ? `Largest group: ${topCategory.name} (${topCategory.count} of ${totalEmployees}).`
+      : "Largest group: unavailable.",
+    `Tracking ${statusSet.size} statuses across ${fundSet.size} fund sources.`,
+  ];
+
+  activityList.innerHTML = items
+    .map(function (text) {
+      return `
+        <div class="activity-item">
+          <div class="activity-dot"></div>
+          <div>
+            <div class="activity-text">${text}</div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function populateFilter(select, values) {
+  if (!select) return;
+  const currentValue = select.value;
+  const defaultLabel = select === statusFilter ? "All statuses" : "All fund sources";
+  const options = [""].concat(values);
+  select.innerHTML = options
+    .map(function (value) {
+      const label = value || defaultLabel;
+      const selected = value === currentValue ? " selected" : "";
+      return `<option value="${value}"${selected}>${label}</option>`;
+    })
+    .join("");
+}
+
+function updateFilters(categories) {
+  const statuses = new Set();
+  const funds = new Set();
+
+  Object.keys(categories).forEach(function (key) {
+    (categories[key] || []).forEach(function (record) {
+      const status = String(record["Status"] ?? "").trim();
+      const fund = String(record["Fund Source"] ?? "").trim();
+      if (status) statuses.add(status);
+      if (fund) funds.add(fund);
+    });
+  });
+
+  populateFilter(statusFilter, Array.from(statuses).sort());
+  populateFilter(fundFilter, Array.from(funds).sort());
+}
+
+function updateResultCount() {
+  if (!resultCount) return;
+  const total = Object.keys(baseCategories).reduce(function (sum, key) {
+    return sum + getCategoryCount(baseCategories, key);
+  }, 0);
+  const filtered = Object.keys(filteredCategories).reduce(function (sum, key) {
+    return sum + getCategoryCount(filteredCategories, key);
+  }, 0);
+  const hasFilters =
+    normalizeValue(searchInput && searchInput.value) ||
+    (statusFilter && statusFilter.value) ||
+    (fundFilter && fundFilter.value);
+  resultCount.textContent = hasFilters
+    ? `Showing ${filtered.toLocaleString("en-PH")} of ${total.toLocaleString("en-PH")} records`
+    : `Showing ${total.toLocaleString("en-PH")} records`;
+}
+
+function applyFilters() {
+  const query = normalizeValue(searchInput && searchInput.value);
+  const status = statusFilter ? statusFilter.value : "";
+  const fund = fundFilter ? fundFilter.value : "";
+
+  filteredCategories = {};
+
+  Object.keys(baseCategories).forEach(function (key) {
+    const list = baseCategories[key] || [];
+    const filtered = list.filter(function (record) {
+      if (status && String(record["Status"] ?? "").trim() !== status) {
+        return false;
+      }
+      if (fund && String(record["Fund Source"] ?? "").trim() !== fund) {
+        return false;
+      }
+      if (query) {
+        const haystack = TABLE_HEADERS.map(function (header) {
+          return normalizeValue(record[header]);
+        }).join(" ");
+        return haystack.includes(query);
+      }
+      return true;
+    });
+    filteredCategories[key] = filtered;
+  });
+
+  renderTablesFor(filteredCategories);
+  updateResultCount();
+}
+
 async function fetchDashboardData() {
   if (SCRIPT_URL === "YOUR_APPS_SCRIPT_WEB_APP_URL") {
     throw new Error("Set SCRIPT_URL to your Apps Script Web App URL.");
@@ -189,17 +341,16 @@ async function initDashboard() {
     const data = await fetchDashboardData();
     const categories = data.categories || {};
 
-    tables.forEach(function (table) {
-      const category = table.getAttribute("data-category");
-      renderCategory(table, categories[category] || []);
-    });
+    baseCategories = categories;
+    filteredCategories = categories;
 
     updateKpis(categories, data.updatedAt);
     updateChart(categories);
+    updateActivity(categories, data.updatedAt);
+    updateFilters(categories);
+    applyFilters();
   } catch (error) {
-    tables.forEach(function (table) {
-      renderCategory(table, []);
-    });
+    renderTablesFor({});
     console.error("Failed to load CSU data:", error);
   } finally {
     spinner.classList.add("hidden");
@@ -207,3 +358,24 @@ async function initDashboard() {
 }
 
 document.addEventListener("DOMContentLoaded", initDashboard);
+
+if (searchInput) {
+  searchInput.addEventListener("input", applyFilters);
+}
+
+if (statusFilter) {
+  statusFilter.addEventListener("change", applyFilters);
+}
+
+if (fundFilter) {
+  fundFilter.addEventListener("change", applyFilters);
+}
+
+if (clearFilters) {
+  clearFilters.addEventListener("click", function () {
+    if (searchInput) searchInput.value = "";
+    if (statusFilter) statusFilter.value = "";
+    if (fundFilter) fundFilter.value = "";
+    applyFilters();
+  });
+}
