@@ -267,6 +267,7 @@ function updateAttainmentChart(categories) {
     bachelors: 0,
     masters: 0,
     phd: 0,
+    other: 0,
   };
 
   Object.keys(categories).forEach(function (key) {
@@ -278,6 +279,8 @@ function updateAttainmentChart(categories) {
         counts.masters += 1;
       } else if (raw.includes("phd") || raw.includes("doctor")) {
         counts.phd += 1;
+      } else if (raw) {
+        counts.other += 1;
       }
     });
   });
@@ -290,7 +293,7 @@ function updateAttainmentChart(categories) {
     }
   });
 
-  const total = counts.bachelors + counts.masters + counts.phd;
+  const total = counts.bachelors + counts.masters + counts.phd + counts.other;
   const ctx = attainmentChart.getContext("2d");
   const size = attainmentChart.width;
   const radius = size / 2 - 6;
@@ -315,6 +318,7 @@ function updateAttainmentChart(categories) {
     { value: counts.bachelors, color: "#0b6f3a" },
     { value: counts.masters, color: "#d0a400" },
     { value: counts.phd, color: "#064226" },
+    { value: counts.other, color: "#5a6a60" },
   ];
 
   let startAngle = -Math.PI / 2;
