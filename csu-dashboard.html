@@ -379,25 +379,25 @@
       <div class="sidebar-brand">CSU Dashboard</div>
       <div class="sidebar-section">Overview</div>
       <nav class="sidebar-nav">
-        <a class="sidebar-link is-active" href="#top">
+        <a class="sidebar-link is-active" href="#top" data-section="top">
           <span>Dashboard Home</span>
         </a>
-        <a class="sidebar-link" href="#records">
+        <a class="sidebar-link" href="#records" data-section="records">
           <span>Employee Records</span>
         </a>
       </nav>
       <div class="sidebar-section">Categories</div>
       <nav class="sidebar-nav">
-        <a class="sidebar-link" href="#panel-teaching-perm">
+        <a class="sidebar-link" href="#panel-teaching-perm" data-section="panel-teaching-perm">
           <span>Teaching - Permanent</span>
         </a>
-        <a class="sidebar-link" href="#panel-teaching-non">
+        <a class="sidebar-link" href="#panel-teaching-non" data-section="panel-teaching-non">
           <span>Teaching - Non-Permanent</span>
         </a>
-        <a class="sidebar-link" href="#panel-nonteaching-perm">
+        <a class="sidebar-link" href="#panel-nonteaching-perm" data-section="panel-nonteaching-perm">
           <span>Non-Teaching - Permanent</span>
         </a>
-        <a class="sidebar-link" href="#panel-nonteaching-non">
+        <a class="sidebar-link" href="#panel-nonteaching-non" data-section="panel-nonteaching-non">
           <span>Non-Teaching - Non-Permanent</span>
         </a>
       </nav>
@@ -599,5 +599,32 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="gsheets-sync.js"></script>
+  <script>
+    const sidebarLinks = document.querySelectorAll(".sidebar-link[data-section]");
+    const sections = Array.from(sidebarLinks)
+      .map(function (link) {
+        return document.getElementById(link.dataset.section);
+      })
+      .filter(Boolean);
+
+    const sidebarObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          sidebarLinks.forEach(function (link) {
+            link.classList.toggle(
+              "is-active",
+              link.dataset.section === entry.target.id
+            );
+          });
+        });
+      },
+      { rootMargin: "-35% 0px -55%" }
+    );
+
+    sections.forEach(function (section) {
+      sidebarObserver.observe(section);
+    });
+  </script>
 </body>
 </html>
