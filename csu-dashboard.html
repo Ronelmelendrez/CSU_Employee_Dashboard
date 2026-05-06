@@ -74,6 +74,34 @@
       margin-bottom: 0.75rem;
     }
 
+    .sidebar-group {
+      border: none;
+      padding: 0;
+      margin: 0 0 1.5rem;
+    }
+
+    .sidebar-group > summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sidebar-group > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .sidebar-group > summary::after {
+      content: "+";
+      font-size: 1rem;
+      color: var(--csu-slate);
+    }
+
+    .sidebar-group[open] > summary::after {
+      content: "-";
+    }
+
     .sidebar-nav {
       display: grid;
       gap: 0.5rem;
@@ -111,6 +139,13 @@
 
     .sidebar-link span {
       font-size: 0.95rem;
+    }
+
+    .sidebar-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--csu-green-dark);
+      flex-shrink: 0;
     }
 
     .sidebar-pill {
@@ -496,31 +531,63 @@
         CSU Dashboard
         <div class="sidebar-subtitle">Employee Intelligence</div>
       </div>
-      <div class="sidebar-section">Overview</div>
-      <nav class="sidebar-nav">
-        <a class="sidebar-link is-active" href="#top" data-section="top">
-          <span>Dashboard Home</span>
-          <span class="sidebar-pill">Live</span>
-        </a>
-        <a class="sidebar-link" href="#records" data-section="records">
-          <span>Employee Records</span>
-        </a>
-      </nav>
-      <div class="sidebar-section">Categories</div>
-      <nav class="sidebar-nav">
-        <a class="sidebar-link" href="#panel-teaching-perm" data-section="panel-teaching-perm">
-          <span>Teaching - Permanent</span>
-        </a>
-        <a class="sidebar-link" href="#panel-teaching-non" data-section="panel-teaching-non">
-          <span>Teaching - Non-Permanent</span>
-        </a>
-        <a class="sidebar-link" href="#panel-nonteaching-perm" data-section="panel-nonteaching-perm">
-          <span>Non-Teaching - Permanent</span>
-        </a>
-        <a class="sidebar-link" href="#panel-nonteaching-non" data-section="panel-nonteaching-non">
-          <span>Non-Teaching - Non-Permanent</span>
-        </a>
-      </nav>
+      <details class="sidebar-group" open>
+        <summary class="sidebar-section">Overview</summary>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link is-active" href="#top" data-section="top">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 11l9-8 9 8" />
+              <path d="M5 10v10h14V10" />
+            </svg>
+            <span>Dashboard Home</span>
+            <span class="sidebar-pill">Live</span>
+          </a>
+          <a class="sidebar-link" href="#records" data-section="records">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4h16v16H4z" />
+              <path d="M8 8h8" />
+              <path d="M8 12h8" />
+              <path d="M8 16h5" />
+            </svg>
+            <span>Employee Records</span>
+          </a>
+        </nav>
+      </details>
+      <details class="sidebar-group" open>
+        <summary class="sidebar-section">Categories</summary>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link" href="#panel-teaching-perm" data-section="panel-teaching-perm">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3l9 5-9 5-9-5 9-5z" />
+              <path d="M3 13l9 5 9-5" />
+            </svg>
+            <span>Teaching - Permanent</span>
+          </a>
+          <a class="sidebar-link" href="#panel-teaching-non" data-section="panel-teaching-non">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 6h16" />
+              <path d="M4 12h16" />
+              <path d="M4 18h10" />
+            </svg>
+            <span>Teaching - Non-Permanent</span>
+          </a>
+          <a class="sidebar-link" href="#panel-nonteaching-perm" data-section="panel-nonteaching-perm">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4h16v16H4z" />
+              <path d="M8 8h8v8H8z" />
+            </svg>
+            <span>Non-Teaching - Permanent</span>
+          </a>
+          <a class="sidebar-link" href="#panel-nonteaching-non" data-section="panel-nonteaching-non">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 7h10v10H7z" />
+              <path d="M3 12h4" />
+              <path d="M17 12h4" />
+            </svg>
+            <span>Non-Teaching - Non-Permanent</span>
+          </a>
+        </nav>
+      </details>
     </aside>
 
     <main class="content" id="top">
