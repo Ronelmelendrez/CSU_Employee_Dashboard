@@ -6,6 +6,18 @@ const SHEET_NAMES = [
   "Non-Teaching - Non-Permanent",
 ];
 
+const CANONICAL_HEADERS = [
+  "Name of Personnel",
+  "Start in CSU",
+  "Status",
+  "Highest Educational Attainment",
+  "Academic Rank",
+  "Salary Grade",
+  "STEP",
+  "Salary",
+  "Fund Source",
+];
+
 function doGet(e) {
   var ss = SPREADSHEET_ID
     ? SpreadsheetApp.openById(SPREADSHEET_ID)
@@ -26,10 +38,6 @@ function doGet(e) {
       return;
     }
 
-    var headers = values[0].map(function (h) {
-      return String(h).trim();
-    });
-
     var rows = values.slice(1).filter(function (row) {
       return row.some(function (cell) {
         return String(cell).trim() !== "";
@@ -38,7 +46,7 @@ function doGet(e) {
 
     var data = rows.map(function (row) {
       var obj = {};
-      headers.forEach(function (key, idx) {
+      CANONICAL_HEADERS.forEach(function (key, idx) {
         obj[key] = row[idx];
       });
       return obj;

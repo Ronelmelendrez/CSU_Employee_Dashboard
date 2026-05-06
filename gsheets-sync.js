@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJ5OO_jg9ZDvBMDKfbNrihuH_AxUM-fAjbFFdgapbqQUc5JD9Pqq9dISwCFSheMalf-w/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2oWP1pAKrI88VovmLc9uVpsRBBIesMkB50RbZ0jwTdGYAERKIfRHv3v3PvC4mlibfbQ/exec";
 
 const TABLE_HEADERS = [
   "Name of Personnel",
