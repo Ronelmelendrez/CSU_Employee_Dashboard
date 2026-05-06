@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSU Employee Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --csu-green: #0b6f3a;
+      --csu-green-dark: #064226;
+      --csu-gold: #d0a400;
+      --csu-ink: #111d15;
+      --csu-sand: #f4f1ea;
+      --csu-mist: #eff4f1;
+      --csu-slate: #5a6a60;
+      --shadow-soft: 0 20px 45px rgba(10, 31, 19, 0.16);
+      --shadow-float: 0 30px 60px rgba(10, 31, 19, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      color: var(--csu-ink);
+      background:
+        radial-gradient(circle at 15% 8%, rgba(208, 164, 0, 0.14), transparent 42%),
+        radial-gradient(circle at 85% 5%, rgba(11, 111, 58, 0.16), transparent 45%),
+        linear-gradient(180deg, #ffffff 0%, var(--csu-sand) 65%, #ffffff 100%);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, 92vw);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 1.5rem 0 0.5rem;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .logo {
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      color: var(--csu-green-dark);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--csu-slate);
+    }
+
+    .nav-links a:hover {
+      color: var(--csu-green);
+    }
+
+    .hero {
+      margin: 2.5rem 0 4.5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 3rem;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-card {
+      background: linear-gradient(140deg, var(--csu-green), var(--csu-green-dark));
+      color: #ffffff;
+      padding: 2.75rem 2.75rem 2.5rem;
+      border-radius: 30px;
+      box-shadow: var(--shadow-float);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), transparent 60%);
+      z-index: -1;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(208, 164, 0, 0.25);
+      top: -120px;
+      right: -80px;
+      z-index: -1;
+    }
+
+    .hero-eyebrow {
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      margin-bottom: 1.25rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .hero-title {
+      font-family: "DM Serif Display", "Georgia", serif;
+      font-size: clamp(2.35rem, 2.2vw + 1.7rem, 3.4rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.88);
+      margin-bottom: 2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn {
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      font-weight: 600;
+      padding: 0.85rem 1.8rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--csu-gold);
+      color: var(--csu-ink);
+      box-shadow: 0 12px 24px rgba(208, 164, 0, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(10, 31, 19, 0.18);
+    }
+
+    .hero-stats {
+      display: grid;
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    .hero-stats::before {
+      content: "";
+      position: absolute;
+      inset: -20px;
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.7);
+      filter: blur(20px);
+      z-index: -1;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(11, 111, 58, 0.08);
+    }
+
+    .stat-label {
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.7rem;
+      color: var(--csu-slate);
+    }
+
+    .stat-value {
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0.5rem 0 0.35rem;
+      color: var(--csu-green-dark);
+    }
+
+    .stat-note {
+      font-size: 0.95rem;
+      color: var(--csu-slate);
+    }
+
+    section {
+      padding: 3.5rem 0;
+    }
+
+    .section-title {
+      font-family: "DM Serif Display", "Georgia", serif;
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      color: var(--csu-slate);
+      max-width: 720px;
+      line-height: 1.8;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .about-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(11, 111, 58, 0.08);
+    }
+
+    .about-card h3 {
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .feature-card {
+      background: var(--csu-mist);
+      border-radius: 18px;
+      padding: 1.5rem;
+      border: 1px solid rgba(11, 111, 58, 0.08);
+    }
+
+    .feature-card h4 {
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      margin-bottom: 0.65rem;
+      font-size: 1rem;
+    }
+
+    .cta {
+      background: linear-gradient(135deg, #ffffff 0%, var(--csu-mist) 100%);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .cta h3 {
+      font-size: 1.8rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .contact-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(11, 111, 58, 0.08);
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 1rem;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(11, 111, 58, 0.2);
+      padding: 0.75rem 0.9rem;
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      font-size: 0.95rem;
+      background: #ffffff;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    footer {
+      padding: 2.5rem 0 3rem;
+      color: var(--csu-slate);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .cta {
+        grid-template-columns: 1fr;
+        text-align: left;
+      }
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo">CSU Employee Hub</div>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <a href="#contact">Contact</a>
+        <a href="csu-dashboard.html">Open Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-eyebrow">CSU Analytics Portal</div>
+        <h1 class="hero-title">Academic workforce intelligence in one place.</h1>
+        <p class="hero-subtitle">
+          Centralize CSU employee records across teaching and non-teaching units. Track
+          tenure, ranks, funding sources, and staffing changes with a clean, formal
+          dashboard built for decision makers.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="csu-dashboard.html">Launch Dashboard</a>
+          <a class="btn btn-secondary" href="csu-records.html">View Records</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-label">Data Source</div>
+          <div class="stat-value">4</div>
+          <div class="stat-note">Staffing categories synced nightly.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Live Monitoring</div>
+          <div class="stat-value">24/7</div>
+          <div class="stat-note">Web-based access for department leads.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Governance</div>
+          <div class="stat-value">CSU</div>
+          <div class="stat-note">Aligned with official HR reporting standards.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <h2 class="section-title">Purpose-built for CSU operations</h2>
+      <p class="section-subtitle">
+        The Employee Dashboard System streamlines staffing visibility across CSU. From
+        appointment dates to fund sources, it delivers the clarity needed for academic
+        planning, accreditation reporting, and workforce balancing.
+      </p>
+      <div class="about-grid">
+        <article class="about-card">
+          <h3>Accurate at every layer</h3>
+          <p>
+            Pulls directly from verified Google Sheets data and standardizes each category
+            into a shared model for confident comparisons.
+          </p>
+        </article>
+        <article class="about-card">
+          <h3>Academic-first design</h3>
+          <p>
+            Formal typography, clear hierarchy, and minimal layouts keep attention on the
+            staff data that drives CSU decisions.
+          </p>
+        </article>
+        <article class="about-card">
+          <h3>Operational ready</h3>
+          <p>
+            Export-ready tables, consistent filters, and visual summaries reduce manual
+            reporting cycles and spreadsheet hunting.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="features">
+      <h2 class="section-title">Key dashboard capabilities</h2>
+      <p class="section-subtitle">
+        A curated set of features focused on oversight, transparency, and strategic
+        staffing insights.
+      </p>
+      <div class="features-grid">
+        <article class="feature-card">
+          <h4>Category intelligence</h4>
+          <p>Switch between the four CSU staffing categories without losing context.</p>
+        </article>
+        <article class="feature-card">
+          <h4>Dynamic insights</h4>
+          <p>KPIs, charts, and activity panels stay aligned with filtered views.</p>
+        </article>
+        <article class="feature-card">
+          <h4>Governed data</h4>
+          <p>Single source of truth from authorized CSU spreadsheets.</p>
+        </article>
+        <article class="feature-card">
+          <h4>Advanced filtering</h4>
+          <p>Search by status, rank, fund source, or names in seconds.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="cta">
+        <div>
+          <h3>Ready to review CSU staffing trends?</h3>
+          <p class="section-subtitle">
+            Launch the live dashboard or browse the complete records view. Both update in
+            real time from the CSU spreadsheet data source.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="csu-dashboard.html">Open Dashboard</a>
+          <a class="btn btn-secondary" href="csu-records.html">Open Records</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2 class="section-title">Connect with the CSU HR team</h2>
+      <p class="section-subtitle">
+        Need access adjustments, data corrections, or onboarding support? Reach the CSU
+        HR operations desk and keep your dashboard aligned with official records.
+      </p>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3>CSU HR Operations</h3>
+          <p>csu.hr@csu.edu.ph</p>
+          <p>+63 2 8888 0000</p>
+          <p>Administrative Building, CSU Campus</p>
+        </div>
+        <div class="contact-card">
+          <h3>Send a request</h3>
+          <form class="contact-form">
+            <input type="text" placeholder="Full name" aria-label="Full name" />
+            <input type="email" placeholder="Email address" aria-label="Email address" />
+            <textarea placeholder="Message" aria-label="Message"></textarea>
+            <button class="btn btn-primary" type="submit">Submit request</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    CSU Employee Dashboard System · Formal staffing intelligence for academic leaders.
+  </footer>
+</body>
+</html>
