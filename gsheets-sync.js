@@ -19,7 +19,6 @@ const kpiTotal = document.getElementById("kpi-total");
 const kpiTeaching = document.getElementById("kpi-teaching");
 const kpiNonTeaching = document.getElementById("kpi-nonteaching");
 const kpiUpdated = document.getElementById("kpi-updated");
-const activityList = document.getElementById("activityList");
 const attainmentChart = document.getElementById("attainmentChart");
 const attainmentLegendItems = document.querySelectorAll(".legend-item");
 const searchInput = document.getElementById("searchInput");
@@ -207,58 +206,6 @@ function updateChart(categories) {
   });
 }
 
-function updateActivity(categories, updatedAt) {
-  if (!activityList) return;
-
-  const categoryCounts = Object.keys(categories).map(function (name) {
-    return { name: name, count: getCategoryCount(categories, name) };
-  });
-
-  const totalEmployees = categoryCounts.reduce(function (sum, item) {
-    return sum + item.count;
-  }, 0);
-
-  const topCategory = categoryCounts.sort(function (a, b) {
-    return b.count - a.count;
-  })[0];
-
-  const statusSet = new Set();
-  const fundSet = new Set();
-
-  Object.keys(categories).forEach(function (key) {
-    (categories[key] || []).forEach(function (record) {
-      const status = String(record["Status"] ?? "").trim();
-      const fund = String(record["Fund Source"] ?? "").trim();
-      if (status) statusSet.add(status);
-      if (fund) fundSet.add(fund);
-    });
-  });
-
-  const updatedText = updatedAt
-    ? dateFormatter.format(parseDate(updatedAt))
-    : "Just now";
-
-  const items = [
-    `Roster synced on ${updatedText}.`,
-    topCategory
-      ? `Largest group in view: ${topCategory.name} (${topCategory.count} of ${totalEmployees}).`
-      : "Largest group: unavailable.",
-    `Current view includes ${statusSet.size} statuses across ${fundSet.size} fund sources.`,
-  ];
-
-  activityList.innerHTML = items
-    .map(function (text) {
-      return `
-        <div class="activity-item">
-          <div class="activity-dot"></div>
-          <div>
-            <div class="activity-text">${text}</div>
-          </div>
-        </div>
-      `;
-    })
-    .join("");
-}
 
 function updateAttainmentChart(categories) {
   if (!attainmentChart) return;
@@ -415,7 +362,6 @@ function applyFilters() {
   renderTablesFor(filteredCategories);
   updateKpis(filteredCategories, lastUpdatedAt);
   updateChart(filteredCategories);
-  updateActivity(filteredCategories, lastUpdatedAt);
   updateAttainmentChart(filteredCategories);
   updateResultCount();
 }
