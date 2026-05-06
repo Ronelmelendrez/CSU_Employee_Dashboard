@@ -50,6 +50,7 @@
       position: sticky;
       top: 0;
       height: 100vh;
+      box-shadow: 12px 0 30px rgba(10, 31, 19, 0.06);
     }
 
     .sidebar-brand {
@@ -57,6 +58,12 @@
       font-size: 1.25rem;
       margin-bottom: 2rem;
       color: var(--csu-green-dark);
+    }
+
+    .sidebar-subtitle {
+      font-size: 0.8rem;
+      color: var(--csu-slate);
+      margin-top: 0.35rem;
     }
 
     .sidebar-section {
@@ -83,6 +90,7 @@
       font-weight: 600;
       text-decoration: none;
       transition: background 0.2s ease, color 0.2s ease;
+      position: relative;
     }
 
     .sidebar-link:hover,
@@ -91,8 +99,28 @@
       color: var(--csu-green-dark);
     }
 
+    .sidebar-link.is-active::before {
+      content: "";
+      position: absolute;
+      left: -1.5rem;
+      width: 6px;
+      height: 60%;
+      background: var(--csu-gold);
+      border-radius: 999px;
+    }
+
     .sidebar-link span {
       font-size: 0.95rem;
+    }
+
+    .sidebar-pill {
+      margin-left: auto;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(11, 111, 58, 0.12);
+      color: var(--csu-green-dark);
+      font-weight: 600;
     }
 
     .content {
@@ -464,11 +492,15 @@
 <body>
   <div class="app-shell">
     <aside class="sidebar">
-      <div class="sidebar-brand">CSU Dashboard</div>
+      <div class="sidebar-brand">
+        CSU Dashboard
+        <div class="sidebar-subtitle">Employee Intelligence</div>
+      </div>
       <div class="sidebar-section">Overview</div>
       <nav class="sidebar-nav">
         <a class="sidebar-link is-active" href="#top" data-section="top">
           <span>Dashboard Home</span>
+          <span class="sidebar-pill">Live</span>
         </a>
         <a class="sidebar-link" href="#records" data-section="records">
           <span>Employee Records</span>
