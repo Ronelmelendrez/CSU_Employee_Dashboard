@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSU Employee Dashboard</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --csu-green: #0b6f3a;
+      --csu-gold: #d0a400;
+      --csu-ink: #15201a;
+      --csu-mist: #f2f5f3;
+    }
+
+    body {
+      background: radial-gradient(circle at top left, #ffffff 0%, var(--csu-mist) 60%);
+      color: var(--csu-ink);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .brand-bar {
+      background: linear-gradient(120deg, var(--csu-green), #0a4e2a);
+      color: #ffffff;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 4px solid var(--csu-gold);
+    }
+
+    .brand-title {
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .card-shadow {
+      border: none;
+      box-shadow: 0 12px 30px rgba(9, 31, 20, 0.12);
+      border-radius: 16px;
+    }
+
+    .nav-tabs .nav-link {
+      color: var(--csu-ink);
+      font-weight: 600;
+    }
+
+    .nav-tabs .nav-link.active {
+      color: var(--csu-green);
+      border-color: var(--csu-green) var(--csu-green) #ffffff;
+    }
+
+    .table thead th {
+      background: #e6efe9;
+      color: var(--csu-ink);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .table tbody td {
+      vertical-align: middle;
+      font-size: 0.95rem;
+    }
+
+    .status-pill {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: #eef6f0;
+      color: var(--csu-green);
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .spinner-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(242, 245, 243, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1050;
+      transition: opacity 0.2s ease;
+    }
+
+    .spinner-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: #5c6f62;
+    }
+
+    @media (max-width: 768px) {
+      .brand-title {
+        font-size: 1.25rem;
+      }
+
+      .table-responsive {
+        border-radius: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="brand-bar">
+    <div class="container">
+      <h1 class="brand-title">CSU Employee Dashboard</h1>
+      <p class="mb-0">Live data synced from CSU personnel records.</p>
+    </div>
+  </header>
+
+  <main class="container py-4">
+    <div class="card card-shadow p-4">
+      <ul class="nav nav-tabs" id="categoryTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="tab-teaching-perm" data-bs-toggle="tab" data-bs-target="#panel-teaching-perm" type="button" role="tab">Teaching - Permanent</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="tab-teaching-non" data-bs-toggle="tab" data-bs-target="#panel-teaching-non" type="button" role="tab">Teaching - Non-Permanent</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="tab-nonteaching-perm" data-bs-toggle="tab" data-bs-target="#panel-nonteaching-perm" type="button" role="tab">Non-Teaching - Permanent</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="tab-nonteaching-non" data-bs-toggle="tab" data-bs-target="#panel-nonteaching-non" type="button" role="tab">Non-Teaching - Non-Permanent</button>
+        </li>
+      </ul>
+
+      <div class="tab-content pt-4" id="categoryTabsContent">
+        <div class="tab-pane fade show active" id="panel-teaching-perm" role="tabpanel" aria-labelledby="tab-teaching-perm">
+          <div class="table-responsive">
+            <table class="table table-hover" data-category="Teaching - Permanent">
+              <thead>
+                <tr>
+                  <th>Name of Personnel</th>
+                  <th>Start in CSU</th>
+                  <th>Status</th>
+                  <th>Highest Educational Attainment</th>
+                  <th>Academic Rank</th>
+                  <th>Salary Grade</th>
+                  <th>STEP</th>
+                  <th>Salary</th>
+                  <th>Fund Source</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="panel-teaching-non" role="tabpanel" aria-labelledby="tab-teaching-non">
+          <div class="table-responsive">
+            <table class="table table-hover" data-category="Teaching - Non-Permanent">
+              <thead>
+                <tr>
+                  <th>Name of Personnel</th>
+                  <th>Start in CSU</th>
+                  <th>Status</th>
+                  <th>Highest Educational Attainment</th>
+                  <th>Academic Rank</th>
+                  <th>Salary Grade</th>
+                  <th>STEP</th>
+                  <th>Salary</th>
+                  <th>Fund Source</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="panel-nonteaching-perm" role="tabpanel" aria-labelledby="tab-nonteaching-perm">
+          <div class="table-responsive">
+            <table class="table table-hover" data-category="Non-Teaching - Permanent">
+              <thead>
+                <tr>
+                  <th>Name of Personnel</th>
+                  <th>Start in CSU</th>
+                  <th>Status</th>
+                  <th>Highest Educational Attainment</th>
+                  <th>Academic Rank</th>
+                  <th>Salary Grade</th>
+                  <th>STEP</th>
+                  <th>Salary</th>
+                  <th>Fund Source</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="panel-nonteaching-non" role="tabpanel" aria-labelledby="tab-nonteaching-non">
+          <div class="table-responsive">
+            <table class="table table-hover" data-category="Non-Teaching - Non-Permanent">
+              <thead>
+                <tr>
+                  <th>Name of Personnel</th>
+                  <th>Start in CSU</th>
+                  <th>Status</th>
+                  <th>Highest Educational Attainment</th>
+                  <th>Academic Rank</th>
+                  <th>Salary Grade</th>
+                  <th>STEP</th>
+                  <th>Salary</th>
+                  <th>Fund Source</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="spinner-overlay" id="loadingSpinner">
+    <div class="text-center">
+      <div class="spinner-border text-success" role="status"></div>
+      <p class="mt-3 mb-0">Loading CSU data...</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="gsheets-sync.js"></script>
+</body>
+</html>
