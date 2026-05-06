@@ -486,23 +486,9 @@
           </div>
         </div>
       </div>
-      <ul class="nav nav-tabs" id="categoryTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="tab-teaching-perm" data-bs-toggle="tab" data-bs-target="#panel-teaching-perm" type="button" role="tab">Teaching - Permanent</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="tab-teaching-non" data-bs-toggle="tab" data-bs-target="#panel-teaching-non" type="button" role="tab">Teaching - Non-Permanent</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="tab-nonteaching-perm" data-bs-toggle="tab" data-bs-target="#panel-nonteaching-perm" type="button" role="tab">Non-Teaching - Permanent</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="tab-nonteaching-non" data-bs-toggle="tab" data-bs-target="#panel-nonteaching-non" type="button" role="tab">Non-Teaching - Non-Permanent</button>
-        </li>
-      </ul>
-
-      <div class="tab-content pt-4" id="categoryTabsContent">
-        <div class="tab-pane fade show active" id="panel-teaching-perm" role="tabpanel" aria-labelledby="tab-teaching-perm">
+      <div class="pt-4" id="categoryTables">
+        <section class="mb-4" id="panel-teaching-perm">
+          <h3 class="panel-title">Teaching - Permanent</h3>
           <div class="table-responsive">
             <table class="table table-hover" data-category="Teaching - Permanent">
               <thead>
@@ -521,9 +507,10 @@
               <tbody></tbody>
             </table>
           </div>
-        </div>
+        </section>
 
-        <div class="tab-pane fade" id="panel-teaching-non" role="tabpanel" aria-labelledby="tab-teaching-non">
+        <section class="mb-4" id="panel-teaching-non">
+          <h3 class="panel-title">Teaching - Non-Permanent</h3>
           <div class="table-responsive">
             <table class="table table-hover" data-category="Teaching - Non-Permanent">
               <thead>
@@ -542,9 +529,10 @@
               <tbody></tbody>
             </table>
           </div>
-        </div>
+        </section>
 
-        <div class="tab-pane fade" id="panel-nonteaching-perm" role="tabpanel" aria-labelledby="tab-nonteaching-perm">
+        <section class="mb-4" id="panel-nonteaching-perm">
+          <h3 class="panel-title">Non-Teaching - Permanent</h3>
           <div class="table-responsive">
             <table class="table table-hover" data-category="Non-Teaching - Permanent">
               <thead>
@@ -563,9 +551,10 @@
               <tbody></tbody>
             </table>
           </div>
-        </div>
+        </section>
 
-        <div class="tab-pane fade" id="panel-nonteaching-non" role="tabpanel" aria-labelledby="tab-nonteaching-non">
+        <section id="panel-nonteaching-non">
+          <h3 class="panel-title">Non-Teaching - Non-Permanent</h3>
           <div class="table-responsive">
             <table class="table table-hover" data-category="Non-Teaching - Non-Permanent">
               <thead>
@@ -584,7 +573,7 @@
               <tbody></tbody>
             </table>
           </div>
-        </div>
+        </section>
       </div>
     </section>
     </main>
@@ -626,17 +615,6 @@
       sidebarObserver.observe(section);
     });
 
-    const tabButtons = document.querySelectorAll("#categoryTabs .nav-link");
-    tabButtons.forEach(function (button) {
-      button.addEventListener("shown.bs.tab", function (event) {
-        const target = event.target.getAttribute("data-bs-target");
-        if (!target) return;
-        const targetId = target.replace("#", "");
-        sidebarLinks.forEach(function (link) {
-          link.classList.toggle("is-active", link.dataset.section === targetId);
-        });
-      });
-    });
   </script>
 </body>
 </html>
