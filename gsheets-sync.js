@@ -68,8 +68,12 @@ function formatCell(key, value) {
 }
 
 function buildRow(record) {
+  const normalizedRecord = Object.keys(record || {}).reduce(function (acc, key) {
+    acc[normalizeHeaderKey(key)] = record[key];
+    return acc;
+  }, {});
   const cells = TABLE_HEADERS.map(function (header) {
-    const value = record[header] ?? "";
+    const value = getRecordValue(record, normalizedRecord, header);
     return `<td>${formatCell(header, value)}</td>`;
   });
   return `<tr>${cells.join("")}</tr>`;
@@ -77,6 +81,22 @@ function buildRow(record) {
 
 function normalizeValue(value) {
   return String(value ?? "").trim().toLowerCase();
+}
+
+function normalizeHeaderKey(value) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getRecordValue(record, normalizedRecord, header) {
+  if (!record) return "";
+  if (record[header] !== undefined) return record[header];
+  const normalized = normalizeHeaderKey(header);
+  return normalizedRecord[normalized] ?? "";
 }
 
 function renderCategory(table, records) {
